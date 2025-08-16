@@ -1,89 +1,532 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ExamQuest - Join the Waitlist</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.1.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.1.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
+      .container {
+        max-width: 500px;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .container:hover {
+        transform: translateY(-5px);
+      }
+
+      .logo {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        font-size: 32px;
+        color: white;
+        font-weight: bold;
+      }
+
+      h1 {
+        color: #333;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .subtitle {
+        color: #666;
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        line-height: 1.6;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .feature {
+        padding: 20px;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+      }
+
+      .feature:hover {
+        transform: translateY(-3px);
+      }
+
+      .feature-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+      }
+
+      .feature h3 {
+        color: #333;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+
+      .feature p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .form-container {
+        background: #f8f9ff;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: white;
+      }
+
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .success-message {
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        animation: slideIn 0.5s ease;
+      }
+
+      .error-message {
+        background: linear-gradient(135deg, #f44336, #da190b);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        animation: shake 0.5s ease;
+      }
+
+      .stats {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 1px solid #e1e5e9;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #667eea;
+      }
+
+      .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 5px;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes shake {
+        0%,
+        20%,
+        40%,
+        60%,
+        80%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-5px);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .loading {
+        animation: pulse 1s infinite;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .container {
+          padding: 30px 20px;
+          margin: 10px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .subtitle {
+          font-size: 1rem;
+        }
+
+        .features {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+
+        .form-container {
+          padding: 20px;
+        }
+
+        .stats {
+          flex-direction: column;
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .logo {
+          width: 60px;
+          height: 60px;
+          font-size: 24px;
+        }
       }
     </style>
   </head>
   <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    <div id="app">
+      <div class="container">
+        <div class="logo">EQ</div>
+        <h1>ExamQuest</h1>
+        <p class="subtitle">
+          Master any exam with our intelligent quiz platform. Join thousands
+          preparing for success!
+        </p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">📚</div>
+            <h3>Smart Quizzes</h3>
+            <p>AI-powered questions that adapt to your learning pace</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">📊</div>
+            <h3>Track Progress</h3>
+            <p>Detailed analytics to monitor your improvement</p>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">🎯</div>
+            <h3>Exam Ready</h3>
+            <p>Practice with real exam-style questions and timing</p>
+          </div>
+        </div>
+
+        <div class="form-container">
+          <form @submit.prevent="submitForm" v-if="!submitted">
+            <div class="form-group">
+              <label for="name">Full Name *</label>
+              <input
+                type="text"
+                id="name"
+                v-model="form.name"
+                required
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input
+                type="email"
+                id="email"
+                v-model="form.email"
+                required
+                placeholder="your.email@example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="examType">Exam Type</label>
+              <select id="examType" v-model="form.examType">
+                <option value="">Select your exam type</option>
+                <option value="university">University Exams</option>
+
+                <option value="Jupeb-Exams">Jupeb-Exams</option>
+
+                <option value="Post-UTME">Post-UTME</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              class="submit-btn"
+              :class="{ loading: isLoading }"
+              :disabled="isLoading"
+            >
+              {{ isLoading ? "Joining Waitlist..." : "Join the Waitlist" }}
+            </button>
+          </form>
+
+          <div v-if="submitted" class="success-message">
+            <h3>🎉 Welcome to the waitlist!</h3>
+            <p>
+              Thank you {{ form.name }}! We'll notify you at {{ form.email }} as
+              soon as ExamQuest launches.
+            </p>
+          </div>
+
+          <div v-if="error" class="error-message">{{ error }}</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-number">{{ waitlistCount }}</div>
+            <div class="stat-label">People Waiting</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">15+</div>
+            <div class="stat-label">Question Types</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Study Access</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      const { createApp } = Vue;
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
+      createApp({
+        data() {
+          return {
+            form: {
+              name: "",
+              email: "",
+              examType: "",
+            },
+
+            submitted: false,
+            isLoading: false,
+            error: "",
+            waitlistCount: 0,
+          };
+        },
+        methods: {
+          async submitForm() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            this.error = "";
+            this.isLoading = true;
+
+            // Simulate API call delay
+            setTimeout(() => {
+              // Basic validation
+              if (!this.form.name.trim() || !this.form.email.trim()) {
+                this.error = "Please fill in all required fields.";
+                this.isLoading = false;
+                return;
+              }
+
+              // Email validation
+
+              if (!emailRegex.test(this.form.email)) {
+                this.error = "Please enter a valid email address.";
+                this.isLoading = false;
+                return;
+              }
+
+              // Store in memory (in a real app, this would be sent to your backend)
+              console.log("New waitlist signup:", this.form);
+            }, 1500);
+            const state = await this.validation();
+
+            if (
+              this.form.examType !== " " &&
+              emailRegex.test(this.form.email) &&
+              this.form.name.trim() !== " " &&
+              !state
+            ) {
+              const response = await fetch(
+                "https://http-request-ce122-default-rtdb.firebaseio.com/waitlist.json",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    name: this.form.name.toLowerCase(),
+                    email: this.form.email.toLowerCase(),
+                    examType: this.form.examType.toLowerCase(),
+                  }),
+                }
+              );
+              setTimeout(() => {
+                if (response.ok) {
+                  this.submitted = true;
+                  this.isLoading = false;
+                  this.form = { name: "", email: "", examType: "" };
+                } else {
+                  this.error = "Failed to join the waitlist. Please try again.";
+                  this.isLoading = false;
+                  this.submitted = false;
+                }
+              }, 1500);
+            }
+          },
+          async fetchWaitlistCount() {
+            try {
+              const response = await fetch(
+                "https://http-request-ce122-default-rtdb.firebaseio.com/waitlist.json"
+              );
+              const data = await response.json();
+              this.waitlistCount = Object.keys(data || {}).length;
+            } catch (error) {
+              console.error("Error fetching waitlist count:", error);
+            }
+          },
+          async validation() {
+            const email = this.form.email.trim().toLowerCase(); // normalize
+            try {
+              const response = await fetch(
+                "https://http-request-ce122-default-rtdb.firebaseio.com/waitlist.json"
+              );
+              const data = (await response.json()) || {};
+
+              // Convert object to array
+              const entries = Object.values(data);
+
+              const alreadyExists = entries.some(
+                (entry) => entry.email.trim().toLowerCase() === email
+              );
+
+              if (alreadyExists) {
+                this.error = "You are already on the waitlist.";
+                this.isLoading = false;
+
+                return true; // return true = validation failed
+              }
+              return false; // validation passed
+            } catch (error) {
+              console.error("Error validating waitlist:", error);
+              return false;
+            }
+          },
+        },
+        mounted() {
+          this.fetchWaitlistCount();
+
+          setInterval(() => {
+            this.fetchWaitlistCount();
+          }, 5000);
+        },
+      }).mount("#app");
     </script>
   </body>
 </html>
